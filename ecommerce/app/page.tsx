@@ -13,6 +13,12 @@ export default function Home() {
             <Link href="/products" className="rounded-full bg-green-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-green-500">
               Shop Products
             </Link>
+            <Link href="/orders" className="rounded-full border border-green-500 px-6 py-3 text-sm font-semibold text-green-100 transition hover:bg-white/10">
+              My Orders
+            </Link>
+            <Link href="/merchant/auth" className="rounded-full border border-green-500 px-6 py-3 text-sm font-semibold text-green-100 transition hover:bg-white/10">
+              Sell on Marketplace
+            </Link>
             <Link href="/admin" className="rounded-full border border-green-500 px-6 py-3 text-sm font-semibold text-green-100 transition hover:bg-white/10">
               Admin Panel
             </Link>

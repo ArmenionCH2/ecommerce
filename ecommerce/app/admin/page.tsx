@@ -14,6 +14,23 @@ async function getProducts() {
   return data ?? [];
 }
 
+async function getMetrics() {
+  const supabase = await createClient();
+  const productsRes = await supabase.from("products").select("id", { count: "exact", head: true });
+  const ordersRes = await supabase.from("orders").select("id", { count: "exact", head: true });
+  const merchantsRes = await supabase.from("profiles").select("id", { count: "exact", head: true }).eq("role", "merchant");
+
+  const { data: ordersData } = await supabase.from("orders").select("total");
+  const totalRevenue = (ordersData ?? []).reduce((sum, order) => sum + Number(order.total ?? 0), 0);
+
+  return {
+    products: Number(productsRes.count ?? 0),
+    orders: Number(ordersRes.count ?? 0),
+    merchants: Number(merchantsRes.count ?? 0),
+    revenue: totalRevenue,
+  };
+}
+
 export default async function AdminPage() {
   const supabase = await createClient();
   const userResp = await supabase.auth.getUser();
@@ -28,6 +45,7 @@ export default async function AdminPage() {
   }
 
   const products = await getProducts();
+  const metrics = await getMetrics();
 
   return (
     <div className="min-h-screen bg-gray-950 text-white p-6">
@@ -35,10 +53,33 @@ export default async function AdminPage() {
         <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <h1 className="text-4xl font-bold">Admin Panel</h1>
-            <p className="text-gray-400">Manage products, stock, and orders.</p>
+            <p className="text-gray-400">Manage products, stock, users, and marketplace metrics.</p>
           </div>
-          <Link href="/products" className="rounded-full bg-green-700 px-5 py-3 text-sm font-semibold text-white">View Shop</Link>
+          <div className="flex flex-wrap gap-3">
+            <Link href="/products" className="rounded-full bg-green-700 px-5 py-3 text-sm font-semibold text-white">View Shop</Link>
+            <Link href="/admin/users" className="rounded-full border border-green-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10">Manage Users</Link>
+            <Link href="/admin/orders" className="rounded-full border border-green-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10">Manage Orders</Link>
+          </div>
         </div>
+
+        <section className="grid gap-6 xl:grid-cols-4">
+          <div className="rounded-3xl border border-green-700 bg-green-950/30 p-6 shadow-xl shadow-black/20">
+            <p className="text-sm uppercase tracking-[0.24em] text-green-300">Products</p>
+            <p className="mt-3 text-4xl font-semibold text-white">{metrics.products}</p>
+          </div>
+          <div className="rounded-3xl border border-green-700 bg-green-950/30 p-6 shadow-xl shadow-black/20">
+            <p className="text-sm uppercase tracking-[0.24em] text-green-300">Orders</p>
+            <p className="mt-3 text-4xl font-semibold text-white">{metrics.orders}</p>
+          </div>
+          <div className="rounded-3xl border border-green-700 bg-green-950/30 p-6 shadow-xl shadow-black/20">
+            <p className="text-sm uppercase tracking-[0.24em] text-green-300">Merchants</p>
+            <p className="mt-3 text-4xl font-semibold text-white">{metrics.merchants}</p>
+          </div>
+          <div className="rounded-3xl border border-green-700 bg-green-950/30 p-6 shadow-xl shadow-black/20">
+            <p className="text-sm uppercase tracking-[0.24em] text-green-300">Revenue</p>
+            <p className="mt-3 text-4xl font-semibold text-white">${metrics.revenue.toFixed(2)}</p>
+          </div>
+        </section>
 
         <div className="grid gap-8 lg:grid-cols-[1.4fr_0.8fr]">
           <div className="rounded-3xl border border-green-700 bg-green-950/30 p-6 shadow-xl shadow-black/20">
