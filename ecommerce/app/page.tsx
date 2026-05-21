@@ -6,7 +6,7 @@ export default function Home() {
     <div className="flex flex-col items-center bg-green-700 gap-2">
       <h1>Home</h1>
       <Input name="test" type="text" placeholder="Enter..."></Input>
-      <Button text="Click Here"></Button>
+      <Button text="Click in Here"></Button>
     </div>
   );
 }

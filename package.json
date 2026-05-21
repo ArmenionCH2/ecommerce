@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "workspaces": [
+    "ecommerce"
+  ],
+  "scripts": {
+    "dev": "cd ecommerce && npm run dev",
+    "build": "cd ecommerce && npm run build",
+    "start": "cd ecommerce && npm run start",
+    "lint": "cd ecommerce && npm run lint"
+  }
+}
