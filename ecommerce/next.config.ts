@@ -7,10 +7,7 @@ const nextConfig: NextConfig = {
   // Crucial fix for GitHub Codespaces proxy URL matching
   experimental: {
     serverActions: {
-      allowedOrigins: [
-        "*.app.github.dev",
-        "localhost:3000"
-      ],
+      allowedOrigins: ["*"],
     },
   },
 };
