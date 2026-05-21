@@ -34,7 +34,9 @@ export default function RootLayout({
         <header className="">
           <nav className="flex justify-end bg-green-900 p-4 gap-4">
             <Link href="/">Home</Link>
-            <Link href="/auth">Register</Link>
+            <Link href="/products">Shop</Link>
+            <Link href="/login">Login</Link>
+            <Link href="/admin">Admin</Link>
           </nav>
         </header>
 
